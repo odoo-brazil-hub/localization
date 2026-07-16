@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_tax_form_l10n_br_engine" model="ir.ui.view">
+        <field name="name">account.tax.form.l10n_br.engine</field>
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.view_tax_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='advanced_booleans']" position="after">
+                <group string="Tributus Engine" name="l10n_br_engine">
+                    <field name="l10n_br_tax_engine_type"/>
+                    <field name="l10n_br_cst"
+                           invisible="l10n_br_tax_engine_type != 'icms'"
+                           required="l10n_br_tax_engine_type == 'icms'"
+                           />    
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_tax_search_l10n_br_engine" model="ir.ui.view">
+        <field name="name">account.tax.search.l10n_br.engine</field>
+        <field name="model">account.tax</field>
+        <field name="inherit_id" ref="account.view_account_tax_search"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="l10n_br_tax_engine_type"/>
+                <field name="l10n_br_cst"/>
+            </field>
+        </field>
+    </record>
+</odoo>

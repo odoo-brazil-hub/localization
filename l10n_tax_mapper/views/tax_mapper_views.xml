@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View (List) for tax.mapper -->
+    <record id="view_tax_mapper_tree" model="ir.ui.view">
+        <field name="name">tax.mapper.list</field>
+        <field name="model">tax.mapper</field>
+        <field name="arch" type="xml">
+            <list string="Tax Mappers">
+                <field name="color" widget="color_picker" string="" optional="show"/>
+                <field name="name"/>
+                <field name="summary" optional="show"/>
+                <field name="product_type" optional="show"/>
+                <field name="using_on"/>
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                <field name="base_country_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View for tax.mapper -->
+    <record id="view_tax_mapper_form" model="ir.ui.view">
+        <field name="name">tax.mapper.form</field>
+        <field name="model">tax.mapper</field>
+        <field name="arch" type="xml">
+            <form string="Tax Mapper">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <h1 class="d-flex align-items-center gap-2">
+                            <field name="color" widget="color_picker" nolabel="1"/>
+                            <field name="name" placeholder="Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="summary" nolabel="1" placeholder="Summary..."/>
+                    </group>
+                    <group name="main">
+                        <group name="general_settings">
+                            <field name="using_on" widget="radio" options="{'horizontal': true}"/>
+                            <field name="product_type" widget="radio" options="{'horizontal': true}"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                            <field name="base_country_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Mapper Lines" name="mapper_lines">
+                            <field name="line_ids">
+                                <list editable="bottom" create="1" delete="1">
+                                    <field name="country_ids" widget="many2many_tags" options="{'no_create': True}" optional="hide"/>
+                                    <field name="country_state_ids" widget="many2many_tags" options="{'no_create': True}" optional="hide"/>
+                                    <field name="country_city_ids" widget="many2many_tags" options="{'no_create': True}" optional="hide"/>
+                                    <field name="country_group_id" options="{'no_create': True}" optional="show"/>
+                                    <field name="partner_ids" widget="many2many_tags" optional="hide"/>
+                                    <field name="tax_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                                    <field name="company_id" column_invisible="True"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View for tax.mapper -->
+    <record id="view_tax_mapper_search" model="ir.ui.view">
+        <field name="name">tax.mapper.search</field>
+        <field name="model">tax.mapper</field>
+        <field name="arch" type="xml">
+            <search string="Search Tax Mappers">
+                <field name="name"/>
+                <field name="summary"/>
+                <field name="product_type"/>
+                <field name="using_on"/>
+                <field name="company_id"/>
+                <filter string="Archived" name="filter_archived" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter string="Purchases" name="filter_purchase" domain="[('using_on', '=', 'purchase')]"/>
+                <separator/>
+                <filter string="Country" name="group_by_country" context="{'group_by': 'base_country_id'}"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>
